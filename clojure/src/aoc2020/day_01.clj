@@ -25,11 +25,11 @@
 ;; Answer should be 713184
 (defn part-1 []
   (-> (get-expenses)
-    (combinations 2)
+    (cmb/combinations 2)
     (find-product-of-2020)))
 
 ;; Answer should be 261244452
 (defn part-2 []
   (-> (get-expenses)
-    (combinations 3)
+    (cmb/combinations 3)
     (find-product-of-2020)))

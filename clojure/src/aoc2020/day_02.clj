@@ -1,5 +1,4 @@
-(ns aoc2020.day-02
-  (:require [clojure.math.combinatorics :as cmb]))
+(ns aoc2020.day-02)
 
 (defn parse-password [[_ p1 p2 l pw]]
   [(Integer/parseInt p1), (Integer/parseInt p2), l, pw])
