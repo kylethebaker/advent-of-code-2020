@@ -1,6 +1,5 @@
 (ns aoc2020.day-03
-  (:require [clojure.math.combinatorics :as cmb]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 (defn get-grid []
   (->> "./resources/day03.input"
