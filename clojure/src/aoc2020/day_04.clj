@@ -20,50 +20,22 @@
     (count _)
     (= 7 _)))
 
-(defn to-num [s]
-  (try (Integer/parseInt s)
-    (catch Exception e nil)))
-
-(defn year-in-range? [s min max]
-  (if (re-matches #"[0-9]{4}" s)
-    (if-let [n (to-num s)]
-      (<= min n max))))
-
-(defn valid-height? [v]
-  (if-let [[_ height unit] (re-matches #"([0-9]+)(cm|in)" v)]
-    (if-let [h (to-num height)]
-      (case unit
-        "cm" (<= 150 h 193)
-        "in" (<= 59 h 76)))))
-
-(defn valid-birth-year? [v]
-  (year-in-range? v 1920 2002))
-
-(defn valid-issue-year? [v]
-  (year-in-range? v 2010 2020))
-
-(defn valid-exp-year? [v]
-  (year-in-range? v 2020 2030))
-
-(defn valid-eye-color? [v]
-  (some #(= %1 v) ["amb" "blu" "brn" "gry" "grn" "hzl" "oth"]))
-
-(defn valid-hair-color? [v]
-  (boolean (re-matches #"#[0-9a-f]{6}" v)))
-
-(defn valid-passport-id? [v]
-  (boolean (re-matches #"[0-9]{9}" v)))
+(defn get-rule [type]
+  (case type
+    "byr" #"19[2-9]\d|200[0-2]"
+    "iyr" #"20(1\d|20)"
+    "eyr" #"20(2\d|30)"
+    "hgt" #"(1([5-8]\d|9[0-3])cm|(59|6\d|7[0-6])in)"
+    "hcl" #"#[\da-f]{6}"
+    "ecl" #"(amb|blu|brn|gry|grn|hzl|oth)"
+    "pid" #"\d{9}"
+    "cid" #".*"))
 
 (defn valid-value? [[type v]]
-  (case type
-    "byr" (valid-birth-year? v)
-    "iyr" (valid-issue-year? v)
-    "eyr" (valid-exp-year? v)
-    "hgt" (valid-height? v)
-    "hcl" (valid-hair-color? v)
-    "ecl" (valid-eye-color? v)
-    "pid" (valid-passport-id? v)
-    "cid" true))
+  (-> type
+    (get-rule)
+    (re-matches v)
+    (boolean)))
 
 (defn valid-entry? [entry]
   (and
