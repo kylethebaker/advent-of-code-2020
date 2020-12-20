@@ -41,10 +41,8 @@
 
 ; Answer should be 1859
 (defn part-1 []
-  (-> (get-input)
-    (run-until-loop-or-exit)))
+  (run-until-loop-or-exit (get-input)))
 
 ; Answer should be 1235
 (defn part-2 []
-  (-> (get-input)
-    (swap-until-it-runs)))
+  (swap-until-it-runs (get-input)))

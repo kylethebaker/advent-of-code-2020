@@ -19,7 +19,7 @@
 (def combos
   (memoize
     (fn
-      ([cur] 1)
+      ([_cur] 1)
       ([cur next & others]
        (let [voltage (+ cur next)]
          (if (> voltage 3)
