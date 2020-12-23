@@ -58,8 +58,11 @@
 
 ;;------------------------------------------------
 ;; Part 2
-;; Answer should be 8546398 (avg 1.68s)
+;; Answer should be 8546398 (avg 1.35s)
 ;;------------------------------------------------
+
+(set! *warn-on-reflection* true)
+(set! *unchecked-math* :warn-on-boxed)
 
 (defn init-db ^longs [init-nums size]
   (let [db (long-array size)]
@@ -77,9 +80,8 @@
         last-n
         (let [last-seen (aget db last-n)
               next-n (if (zero? last-seen) 0 (- last-t last-seen))]
-          (do
             (aset db last-n last-t)
-            (recur (inc last-t) next-n)))))))
+            (recur (inc last-t) next-n))))))
 
 (defn part-2 []
   (solve-nth-f (get-input) 30000000))
