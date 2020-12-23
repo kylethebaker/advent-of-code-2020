@@ -11,6 +11,11 @@
     (map #(Integer/parseInt %))
     (vec)))
 
+;;------------------------------------------------
+;; Part 1
+;; Answer should be 257
+;;------------------------------------------------
+
 (defn add-turn [db turn n]
   (update-in db [n] conj turn))
 
@@ -48,19 +53,33 @@
       (last)
       (take 2))))
 
-;;------------------------------------------------
-;; Part 1
-;;------------------------------------------------
-
-;; Answer should be 257
 (defn part-1 []
   (-> (get-input) (solve-nth 2020)))
 
 ;;------------------------------------------------
 ;; Part 2
+;; Answer should be 8546398 (avg 1.68s)
 ;;------------------------------------------------
 
-;; Answer should be 8546398
-(defn part-2 []
-  (-> (get-input) (solve-nth 300000000)))
+(defn init-db ^longs [init-nums size]
+  (let [db (long-array size)]
+    (as-> init-nums _
+      (map-indexed #(vector %2 (inc %1)) _)
+      (doseq [[n turn] _] (aset db n turn))
+      db)))
 
+(defn solve-nth-f ^long [input ^long nth-turn]
+  (let [first-t (count input)
+        [seed-nums [first-n]] (split-at (dec first-t) input)
+        db (init-db seed-nums nth-turn)]
+    (loop [last-t first-t, last-n first-n]
+      (if (= last-t nth-turn)
+        last-n
+        (let [last-seen (aget db last-n)
+              next-n (if (zero? last-seen) 0 (- last-t last-seen))]
+          (do
+            (aset db last-n last-t)
+            (recur (inc last-t) next-n)))))))
+
+(defn part-2 []
+  (solve-nth-f (get-input) 30000000))
